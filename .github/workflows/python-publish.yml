@@ -28,7 +28,7 @@ jobs:
     
     # Добавляем шаг для установки прав доступа
     - name: Set permissions
-      run: chmod -R 755 your_directory_name
+      run: chmod -R 755 /home/runner/work/Site_Project/Site_Project
       
     # Запускаем серверный скрипт
     - name: Run server script
