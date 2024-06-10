@@ -28,5 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flask
         python -m pip install requests
+        python -m pip install yaml
     - name: Run server script
       run: python tester.py
