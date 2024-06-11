@@ -22,10 +22,9 @@ def preprocess_image(image):
     image = tf.io.decode_image(image, channels=3)
     return image
 
-
-BASE_DIR = "/home/mikhail/YPPRPO/converter/"
-tfrec_dir = "./uploads"
-output_zip = "./results/data.zip"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+tfrec_dir = os.path.join(script_dir, 'uploads')
+output_zip = os.path.join(script_dir, 'results', 'data.zip')
 
 
 # Функция для проверки корректности TFRecord файла
@@ -60,7 +59,7 @@ def unpack_and_create_zip_resized(tfrecord_path, output_zip, target_size=(608, 6
                     counter += 1
 
                     # Преобразование изображения в формат JPEG
-                    image_jpeg = cv2.imencode('.jpg', image_resized)[1].tostring()
+                    image_jpeg = cv2.imencode('.jpg', image_resized)[1].tobytes()
 
                     # Добавление изображения в подпапку в архиве
                     if not folder_created:
@@ -77,8 +76,8 @@ def unpack_and_create_zip_resized(tfrecord_path, output_zip, target_size=(608, 6
 
 
 # Цикл обработки TFRecord файлов
-for tfName in os.listdir(os.path.join(BASE_DIR, tfrec_dir)):
-    tfrecord_path = os.path.join(BASE_DIR, tfrec_dir, tfName)
+for tfName in os.listdir(os.path.join(script_dir, tfrec_dir)):
+    tfrecord_path = os.path.join(script_dir, tfrec_dir, tfName)
     unpack_and_create_zip_resized(tfrecord_path, output_zip, target_size=(608, 608))
 
 

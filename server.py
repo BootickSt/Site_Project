@@ -9,7 +9,7 @@ import time
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 SCRIPTS = {
-    '.tgrec': 'script_converter_tfrec.py',
+    '.tfrec': 'script_converter_tfrec.py',
     '.json': 'script_converter_json.py',
 }
 
@@ -78,12 +78,12 @@ def process():
         os.system(f'python3 {script}')
 
         # Создание архива с обработанными файлами
-        output_zip_path = os.path.join(app.config['RESULTS_FOLDER'], 'data.zip')
-        with zipfile.ZipFile(output_zip_path, 'w') as zipf:
-            for root, dirs, files in os.walk('data'):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    zipf.write(file_path, os.path.relpath(file_path, 'data'))
+        # output_zip_path = os.path.join(app.config['RESULTS_FOLDER'], 'data.zip')
+        # with zipfile.ZipFile(output_zip_path, 'w') as zipf:
+        #     for root, dirs, files in os.walk('data'):
+        #         for file in files:
+        #             file_path = os.path.join(root, file)
+        #             zipf.write(file_path, os.path.relpath(file_path, 'data'))
 
         # Очистка загруженных файлов
         shutil.rmtree(UPLOAD_FOLDER)
@@ -99,7 +99,7 @@ def process():
 @app.route("/download/<filename>")
 def uploaded_file(filename):
     filepath = os.path.join(app.config['RESULTS_FOLDER'], filename)
-    
+
     @after_this_request
     def remove_file(response):
         try:
@@ -107,8 +107,8 @@ def uploaded_file(filename):
         except Exception as error:
             app.logger.error("Error removing file: %s", error)
         return response
-    
+
     return send_from_directory(app.config['RESULTS_FOLDER'], filename)
-    
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=3001)
