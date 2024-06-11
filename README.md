@@ -10,3 +10,8 @@ tester.py
 
 Для запуска сайта выполни команду python3 server.py в коневой директории 
 Для теста сейта выполни команду python3 tester.py в корневой директории
+
+Шевцов Михаил: Backend разработка, server.py, все файлы js
+Васильев Михаил: script_converter_json.py script_converter_tfrec.py
+Пыжьянов Егор: tester.py, тестирование и небольшая доработка (server.py script_converter.py script_converter_tfrec.py, файлы js)
+Смирнова София: Frontend разработка, index.html, css файл, презентация, product Manager
