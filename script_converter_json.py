@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 import shutil
 import yaml
 import time
+import zipfile
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 

@@ -17,7 +17,7 @@ window.onload = () => {
                 const fileName = file.name.toLowerCase();
                 const fileExtension = fileName.split('.').pop();
                 
-                if (file.type === 'application/json') {
+                if (file.type === 'application/json' || fileExtension === 'zip') {
                     hasJson = true;
                 } else {
                     otherFiles = true;
@@ -53,7 +53,7 @@ window.onload = () => {
                 const fileName = file.name.toLowerCase();
                 const fileExtension = fileName.split('.').pop();
                 
-                if (fileExtension !== 'tfrec') {
+                if (fileExtension !== 'tfrec' && fileExtension !== 'zip') {
                     hasTfrec = false;
                     break; // Выходим из цикла, если найден файл с неправильным расширением
                 }

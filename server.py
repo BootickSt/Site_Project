@@ -1,9 +1,17 @@
-from flask import Flask, request, send_file, render_template, send_from_directory, after_this_request
+from flask import Flask, request, send_file, render_template, send_from_directory, after_this_request, session
 from werkzeug.utils import secure_filename
 import os
 import zipfile
 import shutil
 import logging
+import time
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+SCRIPTS = {
+    '.tgrec': 'script_converter_tfrec.py',
+    '.json': 'script_converter_json.py',
+}
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -24,21 +32,21 @@ def hello():
 def upload():
     if "file" not in request.files:
         return "No file part", 400
-    
+
     files = request.files.getlist("file")
     if len(files) == 0:
         return "No files selected", 400
-    
+
     for file in files:
         if file.filename == "":
             return "A file has no name", 400
-        
+
         # Берём только имя файла, для сохранения
         filename = secure_filename(file.filename)
         # Сохранить файл
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        uploaded_files.append(file_path)    
+        uploaded_files.append(file_path)
     return "Files uploaded successfully", 200
 
 @app.route("/process", methods=["POST"])
@@ -50,7 +58,7 @@ def process():
         # Удаляем папку с предыдущими результатами, если она существует
         if os.path.exists('data'):
             shutil.rmtree('data')
-
+        flag = 0
         # Распаковываем и удаляем загруженные ZIP файлы
         for file_path in uploaded_files:
             file_name, file_extension = os.path.splitext(file_path)
@@ -61,9 +69,13 @@ def process():
 
         # Очистка списка загруженных файлов, чтобы не обрабатывать их повторно
         uploaded_files.clear()
-        
+        upload_path = os.path.join(script_dir, UPLOAD_FOLDER)
+        files = os.listdir(upload_path)
+        _, file_extension = os.path.splitext(files[0])
+        script = SCRIPTS.get(file_extension.lower())
+
         # Обработка всех извлечённых файлов
-        os.system("python3 script_converter_json.py")
+        os.system(f'python3 {script}')
 
         # Создание архива с обработанными файлами
         output_zip_path = os.path.join(app.config['RESULTS_FOLDER'], 'data.zip')
@@ -82,6 +94,7 @@ def process():
     except Exception as e:
         logging.error(f"Error processing files: {str(e)}")
         return f"Error processing files: {str(e)}", 500
+
 
 @app.route("/download/<filename>")
 def uploaded_file(filename):
