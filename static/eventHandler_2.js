@@ -48,13 +48,15 @@ document.getElementById("run-btn_2").addEventListener("click", async function(ev
                 if (xhr2.status === 200) {
                     console.log("Files processed successfully");
                     runBtn.innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
-                    status.innerText = "You can Download";
+                    status.innerText = "Save files";
                     runBtn.style.color = 'white';
+                    resetFileInputAndButton2();
                     runBtn.disabled = false;
                 } else {
                     console.error("Error processing files");
                     runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
                     status.innerText = "Error";
+                    runBtn.disabled = false;
                 }
                 loader.style.display = 'none';
                 runBtn.disabled = false;
@@ -70,3 +72,16 @@ document.getElementById("run-btn_2").addEventListener("click", async function(ev
         runBtn.disabled = false;
     } ;
 });
+
+function resetFileInputAndButton2() {
+    const input = document.getElementById('upload-file_2');
+    const fileNotLoaded = document.getElementById('file-not-loaded_2');
+    const uploadBtn = document.getElementById('upload-btn_2');
+
+    // Reset the file input
+    input.value = "";
+
+    // Reset the button text
+    uploadBtn.querySelector('span').innerText = 'TFREC';
+    fileNotLoaded.innerText = 'Not file';
+}

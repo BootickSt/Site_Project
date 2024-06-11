@@ -48,13 +48,17 @@ document.getElementById("run-btn").addEventListener("click", async function(even
                 if (xhr2.status === 200) {
                     console.log("Files processed successfully");
                     runBtn.innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
-                    status.innerText = "Download";
+                    status.innerText = "Save file";
                     runBtn.style.color = 'white';
+                    resetFileInputAndButton()
                     runBtn.disabled = false;
-                } else {
+                } 
+                else 
+                {
                     console.error("Error processing files");
                     runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
-                    status.innerText = "Error";
+                    status.innerText = "Upload files";
+                    runBtn.disabled = false;
                 }
                 loader.style.display = 'none';
                 runBtn.disabled = false;
@@ -70,3 +74,17 @@ document.getElementById("run-btn").addEventListener("click", async function(even
         runBtn.disabled = false;
     } ;
 });
+
+function resetFileInputAndButton() {
+    const input = document.getElementById('upload-file');
+    const fileNotLoaded = document.getElementById('file-not-loaded');
+    const uploadBtn = document.getElementById('upload-btn');
+
+    // Reset the file input
+    input.value = "";
+
+    // Reset the button text
+    uploadBtn.querySelector('span').innerText = 'JSON';
+    fileNotLoaded.innerText = 'Not file';
+}
+

@@ -118,12 +118,12 @@
                 </div>
             </form>
             <div class = "save_button">
-                <button id = "save_btn" onclick="downloadFile()">
+                <button id = "save_btn" >
                     <span>SAVE</span>
                 </button>
             </div>
             <div class = "save_button_2">
-                <button id = "save_btn_2" onclick="downloadFile()">
+                <button id = "save_btn_2">
                     <span>SAVE</span>
                 </button>
             </div>
@@ -143,10 +143,6 @@
     <script src="{{ url_for('static', filename='button.js') }}"></script>
     <script src="{{ url_for('static', filename='eventHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='eventHandler_2.js') }}"></script>  
-    <script>
-        function downloadFile() {
-            window.location.href = '/download/data.zip'; // GET запрос на сервер для скачивания файла
-        }
-    </script> 
+    <script src="{{ url_for('static', filename='saveBtn.js') }}"></script>
 </body>
 </html>
