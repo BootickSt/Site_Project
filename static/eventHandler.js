@@ -3,7 +3,18 @@ document.getElementById("run-btn").addEventListener("click", async function(even
 
     const input = document.getElementById("upload-file");
     const files = input.files;
+
+    // Disable the button and show the loader
+    const runBtn = document.getElementById('run-btn');
+    const status = document.getElementById('status');
+    const loader = document.getElementById('loader');
     
+    runBtn.disabled = true;
+    runBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>';
+    status.style.fontFamily = "Montserrat, sans-serif";
+    status.style.fontSize = "23px";
+    status.style.marginLeft = "5px";
+
     const uploadFile = (file) => {
         return new Promise((resolve, reject) => {
             var xhr = new XMLHttpRequest();
@@ -33,21 +44,29 @@ document.getElementById("run-btn").addEventListener("click", async function(even
         var xhr2 = new XMLHttpRequest();
         xhr2.open("POST", "/process", true);
         xhr2.onreadystatechange = function() {
-            if (xhr2.readyState === XMLHttpRequest.DONE && xhr2.status === 200) {
-                console.log("Files processed successfully");
-
-                // Дополнительные действия после успешной обработки файлов, если необходимо
-                document.getElementById('run-btn').innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
-                document.getElementById('status').innerText = "Download";
-                document.getElementById('status').style.fontFamily = "Montserrat, sans-serif";
-                document.getElementById('status').style.fontSize = "23px";
-                document.getElementById('status').style.marginLeft = "5px";
-                document.getElementById('run-btn').style.color = 'white';
+            if (xhr2.readyState === XMLHttpRequest.DONE) {
+                if (xhr2.status === 200) {
+                    console.log("Files processed successfully");
+                    runBtn.innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
+                    status.innerText = "Download";
+                    runBtn.style.color = 'white';
+                    runBtn.disabled = false;
+                } else {
+                    console.error("Error processing files");
+                    runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
+                    status.innerText = "Error";
+                }
+                loader.style.display = 'none';
+                runBtn.disabled = false;
             }
         };
         xhr2.send();
 
     } catch (error) {
         console.error(error);
-    }
+        runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
+        status.innerText = "Error";
+        loader.style.display = 'none';
+        runBtn.disabled = false;
+    } ;
 });

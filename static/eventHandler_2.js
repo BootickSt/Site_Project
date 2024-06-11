@@ -1,41 +1,72 @@
-document.getElementById("run-btn_2").addEventListener("click", function(event) {
+document.getElementById("run-btn_2").addEventListener("click", async function(event) {
     event.preventDefault(); // Предотвращаем стандартное поведение формы (редирект)
 
     const input = document.getElementById("upload-file_2");
-    const files = input.files;
+    files = input.files;
 
-    const promisse_arr = []
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        var formData = new FormData();
-        formData.append("file", file);
-        promisse_arr.push(fetch('/upload', {
-            method: "POST",body: formData
-          }
-       ))
-    }
-    Promise.all(promisse_arr).then((results)=>{
-        console.log(results);
-        // Проверяем, все ли запросы на загрузку завершились успешно
-        const allUploaded = results.every(result => result.status === 200);
-        if (allUploaded) {
-            // Если все файлы успешно загружены, отправляем запрос на обработку
-            fetch('/process', {
-                method: "POST"
-            }).then((result) => {
-                document.getElementById('run-btn_2').innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
-                document.getElementById('status_2').innerText = "Download";
-                document.getElementById('status_2').style.fontFamily = "Montserrat, sans-serif";
-                document.getElementById('status_2').style.fontSize = "23px";
-                document.getElementById('status_2').style.marginLeft = "5px";
-                document.getElementById('run-btn_2').style.color = 'white';
-            }).catch(error => {
-                console.error('Error processing files:', error);
-            });
-        } else {
-            console.error('Not all files uploaded successfully');
+    // Disable the button and show the loader
+    const runBtn = document.getElementById('run-btn_2');
+    const status = document.getElementById('status_2');
+    const loader = document.getElementById('loader_2');
+    
+    runBtn.disabled = true;
+    runBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>';
+    status.style.fontFamily = "Montserrat, sans-serif";
+    status.style.fontSize = "23px";
+    status.style.marginLeft = "5px";
+
+    const uploadFile = (file) => {
+        return new Promise((resolve, reject) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("File uploaded successfully");
+                        resolve();
+                    } else {
+                        reject("File upload failed");
+                    }
+                }
+            };
+
+            var formData = new FormData();
+            formData.append("file", file);
+            xhr.send(formData);
+        });
+    };
+
+    try {
+        for (let i = 0; i < files.length; i++) {
+            await uploadFile(files[i]);
         }
-    }).catch(error => {
-        console.error('Error uploading files:', error);
-    });
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "/process", true);
+        xhr2.onreadystatechange = function() {
+            if (xhr2.readyState === XMLHttpRequest.DONE) {
+                if (xhr2.status === 200) {
+                    console.log("Files processed successfully");
+                    runBtn.innerHTML = '<i class="fas fa-check" style="font-size: 24px;"></i>';
+                    status.innerText = "You can Download";
+                    runBtn.style.color = 'white';
+                    runBtn.disabled = false;
+                } else {
+                    console.error("Error processing files");
+                    runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
+                    status.innerText = "Error";
+                }
+                loader.style.display = 'none';
+                runBtn.disabled = false;
+            }
+        };
+        xhr2.send();
+
+    } catch (error) {
+        console.error(error);
+        runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
+        status.innerText = "Error";
+        loader.style.display = 'none';
+        runBtn.disabled = false;
+    } ;
 });

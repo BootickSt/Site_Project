@@ -246,6 +246,19 @@ header span {
     text-align: center;
     transition: background-color 0.3s;
 }
+#run-btn:disabled {
+    /* Устанавливаем цвет фона кнопки, когда она заблокирована */
+    background-color: rgb(36, 10, 48); /* Серый цвет */
+    /* Другие стили, например, цвет текста, можно также применить */
+    pointer-events: none; /* Отключаем события для заблокированной кнопки */
+}
+
+#run-btn:disabled:hover {
+    /* Отключаем изменение цвета при наведении на заблокированную кнопку */
+    background-color: rgb(36, 10, 48); /* Серый цвет */
+    cursor: not-allowed; /* Отображаем курсор в виде знака "не допускается" */
+}
+
 .fas.fa-play{
     color: rgb(255, 255, 255); 
 }
@@ -272,6 +285,18 @@ header span {
     display: inline-block; 
     text-align: center;
     transition: background-color 0.3s;
+}
+#run-btn_2:disabled {
+    /* Устанавливаем цвет фона кнопки, когда она заблокирована */
+    background-color: rgb(36, 10, 48); /* Серый цвет */
+    /* Другие стили, например, цвет текста, можно также применить */
+    pointer-events: none; /* Отключаем события для заблокированной кнопки */
+}
+
+#run-btn_2:disabled:hover {
+    /* Отключаем изменение цвета при наведении на заблокированную кнопку */
+    background-color: rgb(36, 10, 48);; /* Серый цвет */
+    cursor: not-allowed; /* Отображаем курсор в виде знака "не допускается" */
 }
 
 .convert_button_2 #run-btn_2:hover {
@@ -338,4 +363,26 @@ header span {
     font-family: 'Montserrat', sans-serif;
     font-size: 25px;
     font-weight: 200;
+}
+
+.button-with-loader {
+position: relative;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+#loader {
+    display: none; /* По умолчанию скрыт */
+    font-size: 24px;
+}
+#loader_2 {
+    display: none; /* По умолчанию скрыт */
+    font-size: 24px;
+}
+#run-btn .fa-spinner {
+    color: white; /* Цвет спиннера по умолчанию */
+}
+#run-btn_2 .fa-spinner {
+    color: white; /* Цвет спиннера по умолчанию */
 }
