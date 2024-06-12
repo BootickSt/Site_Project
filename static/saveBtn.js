@@ -1,19 +1,13 @@
-document.getElementById("save_btn").addEventListener("click", () => resetButton('run-btn', 'status', 'loader'));
 
-function resetButton(runBtnId, statusId, loaderId) {
-    const runBtn = document.getElementById(runBtnId);
-    const status = document.getElementById(statusId);
-    const loader = document.getElementById(loaderId);
-
-    // Сбрасываем текст и статус кнопки
+document.getElementById("save_btn").addEventListener("click", resetSecondButton);
+function resetSecondButton() {
+    downloadFile();
+    const runBtn = document.getElementById('run-btn');
+    const status = document.getElementById('status');
     runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
     status.innerText = "";
-    runBtn.disabled = false;
-
-    // Скрываем индикатор загрузки
-    loader.style.display = 'none';
+    runBtn.disabled = false; 
 }
-
 document.getElementById("save_btn_2").addEventListener("click", resetSecondButton2);
 function resetSecondButton2() {
     downloadFile();

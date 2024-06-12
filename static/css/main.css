@@ -29,16 +29,20 @@ header span {
     font-family: 'Montserrat', sans-serif;
 }
 .rectangle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     background-color: #1f1d2b;
-    margin: 60px auto; /*отступы снаружи*/
-    padding: 50px 120px 55px 100px; /*отступы внутри*/
+    margin: 30px auto; /*отступы снаружи*/
+    padding: 50px 50px 55px 50px; /*отступы внутри*/
     border-radius: 100px;
-    width: 80%; /* задаем ширину контейнера */
-
+    width: 90%; /* задаем ширину контейнера */
+    box-sizing: border-box;
 }
 
 .Header{
-    width: 600px;
+    width: 300px;
     background-color: #1f1d2b;
 }
 .Header #header_1{
@@ -108,14 +112,17 @@ header span {
 }
 
 .inner-block {
+    flex: 0 0 auto;
+    max-width: 100%;
+    /* overflow: hidden; */
     background-color: #666699;
     color: #FFFF;
     border: 5px solid black;
     margin-bottom: 30px; /*отступы между*/
-    margin: -370px -10px 30px 700px; /*отступы снаружи*/
+    margin: 10px 10px 10px 10px; /*отступы снаружи*/
     padding: 50px 100px 250px 50px; /*отступы внутри*/
     border-radius: 100px;
-    width: 555px; /* фиксированная ширина */
+    width: 555px;/* фиксированная ширина */
     height: 25px; /* фиксированная высота */
     /* text-align: center;  */
 }
@@ -386,3 +393,31 @@ position: relative;
 #run-btn_2 .fa-spinner {
     color: white; /* Цвет спиннера по умолчанию */
 }
+
+
+  .item {
+    flex: 1 1 300px; /* Растет, сжимается, начальная ширина */
+    margin: 10px;
+}
+@media (max-width: 768px) {
+    .rectangle {
+        flex-direction: column; /* Переключаемся на вертикальную ориентацию */
+        align-items: center;
+    }
+
+    .text, .inner-block {
+        max-width: 90%; /* Ограничиваем ширину блоков */
+        padding: 10px; /* Уменьшаем внутренние отступы */
+    }
+
+    .inner-block {
+        margin-top: 20px;
+    }
+}
+.text {
+    flex: 1 1 auto; 
+    max-width: 100%;
+    max-width: 580px;
+    min-width: 200px;
+    text-align: center;
+  }

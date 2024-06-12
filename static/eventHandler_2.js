@@ -55,7 +55,7 @@ document.getElementById("run-btn_2").addEventListener("click", async function(ev
                 } else {
                     console.error("Error processing files");
                     runBtn.innerHTML = '<i class="fas fa-play" style="font-size: 24px;"></i>';
-                    status.innerText = "Error";
+                    status.innerText = "Upload files";
                     runBtn.disabled = false;
                 }
                 loader.style.display = 'none';
